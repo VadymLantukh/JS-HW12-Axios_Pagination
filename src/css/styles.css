@@ -76,6 +76,7 @@
   flex-wrap: wrap;
   gap: 24px;
   margin: 0 auto;
+  margin-bottom: 32px;
 }
 
 .images-item {
@@ -167,4 +168,25 @@
 
 .loader-open {
   display: block;
+}
+
+.btn-more {
+  display: block;
+border-radius: 8px;
+padding: 8px 16px;
+width: 125px;
+height: 40px;
+background-color: #4e75ff;
+margin: 0 auto;
+font-weight: 500;
+font-size: 16px;
+line-height: 150%;
+letter-spacing: 0.04em;
+color: #fff;
+margin-bottom: 44px;
+transition: background-color 350ms;
+}
+
+.btn-more:hover{
+  background-color: #6c8cff;
 }
