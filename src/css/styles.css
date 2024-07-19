@@ -171,7 +171,7 @@
 }
 
 .btn-more {
-  display: block;
+  display: none;
 border-radius: 8px;
 padding: 8px 16px;
 width: 125px;
@@ -185,6 +185,10 @@ letter-spacing: 0.04em;
 color: #fff;
 margin-bottom: 44px;
 transition: background-color 350ms;
+}
+
+.btn-more-open {
+  display: block;
 }
 
 .btn-more:hover{

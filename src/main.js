@@ -10,12 +10,13 @@ const formEl = document.querySelector('.form');
 const listImagesEl = document.querySelector('.images-list');
 const loaderEl = document.querySelector('.loader');
 const inputEl = document.querySelector('.input');
+const btnMoreEl = document.querySelector('.btn-more');
 
 formEl.addEventListener('submit', event => {
   event.preventDefault();
   listImagesEl.innerHTML = "";
   loaderEl.classList.add('loader-open');
-
+  btnMoreEl.classList.remove
   const valueUser = inputEl.value.trim();
 
   formEl.reset();
@@ -25,6 +26,7 @@ formEl.addEventListener('submit', event => {
       message: 'Please enter a search query',
     });
     loaderEl.classList.remove('loader-open');
+    btnMoreEl.classList.remove('btn-more-open');
     return;
   }
 
@@ -32,6 +34,7 @@ formEl.addEventListener('submit', event => {
     .then(data => {
       if (data.hits.length === 0) {
         loaderEl.classList.remove('loader-open');
+        btnMoreEl.classList.remove('btn-more-open');
         iziToast.warning({
           title: 'Warning',
           message:
@@ -40,6 +43,8 @@ formEl.addEventListener('submit', event => {
 
         return;
       }
+
+      btnMoreEl.classList.add('btn-more-open');
 
       renderImages(data.hits);
       new SimpleLightbox('.images-list a', {
