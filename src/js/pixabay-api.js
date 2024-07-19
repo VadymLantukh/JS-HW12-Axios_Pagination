@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 export default function fetchImages(q) {
   const params = new URLSearchParams({
     key: '44962191-b2ae47cce5f09f25f6a2bff80',
@@ -7,8 +9,7 @@ export default function fetchImages(q) {
     safesearch: true,
   });
 
-  return fetch(`https://pixabay.com/api/?${params}`)
-    .then(response => {
+  return fetch(`https://pixabay.com/api/?${params}`).then(response => {
     if (!response.ok) {
       throw new Error(response.status);
     }
