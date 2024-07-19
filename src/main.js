@@ -3,8 +3,8 @@ import 'izitoast/dist/css/iziToast.min.css';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
-import fetchImages from './js/pixabay-api';
-import renderImages from './js/render-functions';
+import { fetchImages } from './js/pixabay-api';
+import { renderImages } from './js/render-functions';
 
 const formEl = document.querySelector('.form');
 const listImagesEl = document.querySelector('.images-list');

@@ -1,8 +1,8 @@
 const listImagesEl = document.querySelector('.images-list');
 const loaderEl = document.querySelector('.loader');
 
-export default function renderImages(images) {
-  const murkup = images
+export async function renderImages(images) {
+  const murkup = await images
     .map(image => {
       return `<li class="images-item">
         <a class="gallery-link" href="${image.largeImageURL}">
