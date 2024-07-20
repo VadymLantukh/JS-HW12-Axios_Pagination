@@ -1,23 +1,29 @@
 import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
-import SimpleLightbox from 'simplelightbox';
-import 'simplelightbox/dist/simple-lightbox.min.css';
 
-import { fetchImages } from './js/pixabay-api';
+import { requestImages } from './js/pixabay-api';
 import { renderImages } from './js/render-functions';
 
-const formEl = document.querySelector('.form');
-const listImagesEl = document.querySelector('.images-list');
-const loaderEl = document.querySelector('.loader');
-const inputEl = document.querySelector('.input');
-const btnMoreEl = document.querySelector('.btn-more');
+import {
+  formEl,
+  listImagesEl,
+  loaderEl,
+  inputEl,
+  btnMoreEl,
+  loaderMoreEL,
+} from './js/appeal-collection';
+
+let PAGE = 1;
+let valueUser;
 
 formEl.addEventListener('submit', event => {
   event.preventDefault();
-  listImagesEl.innerHTML = "";
+  btnMoreEl.classList.remove('btn-more-open');
+  listImagesEl.innerHTML = '';
   loaderEl.classList.add('loader-open');
-  btnMoreEl.classList.remove
-  const valueUser = inputEl.value.trim();
+
+  if (valueUser !== inputEl.value.trim()) PAGE = 1;
+  valueUser = inputEl.value.trim();
 
   formEl.reset();
   if (!valueUser) {
@@ -30,7 +36,7 @@ formEl.addEventListener('submit', event => {
     return;
   }
 
-  fetchImages(valueUser)
+  requestImages(valueUser)
     .then(data => {
       if (data.hits.length === 0) {
         loaderEl.classList.remove('loader-open');
@@ -44,13 +50,9 @@ formEl.addEventListener('submit', event => {
         return;
       }
 
-      btnMoreEl.classList.add('btn-more-open');
-
       renderImages(data.hits);
-      new SimpleLightbox('.images-list a', {
-        captionsData: 'alt',
-        captionDelay: 250,
-      }).refresh();
+      btnMoreEl.classList.add('btn-more-open');
+      PAGE += 1;
     })
     .catch(error => {
       iziToast.error({
@@ -60,4 +62,21 @@ formEl.addEventListener('submit', event => {
     });
 });
 
+btnMoreEl.addEventListener('click', () => {
+  btnMoreEl.classList.remove('btn-more-open');
+  loaderMoreEL.classList.add('loader-more-open');
+  requestImages(valueUser, PAGE)
+    .then(data => {
+      renderImages(data.hits);
+      btnMoreEl.classList.add('btn-more-open');
+      PAGE += 1;
+    })
+    .catch(error => {
+      iziToast.error({
+        title: 'Error',
+        message: `Something went wrong: ${error.message}`,
+      });
+    });
+  
 
+});

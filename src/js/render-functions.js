@@ -1,5 +1,10 @@
-const listImagesEl = document.querySelector('.images-list');
-const loaderEl = document.querySelector('.loader');
+import SimpleLightbox from 'simplelightbox';
+import 'simplelightbox/dist/simple-lightbox.min.css';
+
+import { listImagesEl, loaderEl, loaderMoreEL } from './appeal-collection';
+
+// const listImagesEl = document.querySelector('.images-list');
+// const loaderEl = document.querySelector('.loader');
 
 export async function renderImages(images) {
   const murkup = await images
@@ -24,5 +29,11 @@ export async function renderImages(images) {
     .join('');
 
   loaderEl.classList.remove('loader-open');
-  listImagesEl.innerHTML = murkup;
+  loaderMoreEL.classList.remove('loader-more-open');
+  listImagesEl.insertAdjacentHTML('beforeend', murkup);
+
+  new SimpleLightbox('.images-list a', {
+    captionsData: 'alt',
+    captionDelay: 250,
+  }).refresh();
 }
