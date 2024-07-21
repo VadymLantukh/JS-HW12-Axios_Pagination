@@ -13,10 +13,13 @@ import {
   loaderMoreEL,
 } from './js/appeal-collection';
 
+let LIMIT = 15;
 let PAGE = 1;
 let valueUser;
+let totalHits;
+let totalPages;
 
-formEl.addEventListener('submit', event => {
+formEl.addEventListener('submit', async event => {
   event.preventDefault();
   btnMoreEl.classList.remove('btn-more-open');
   listImagesEl.innerHTML = '';
@@ -36,7 +39,7 @@ formEl.addEventListener('submit', event => {
     return;
   }
 
-  requestImages(valueUser)
+  requestImages(valueUser, PAGE, LIMIT)
     .then(data => {
       if (data.hits.length === 0) {
         loaderEl.classList.remove('loader-open');
@@ -53,6 +56,8 @@ formEl.addEventListener('submit', event => {
       renderImages(data.hits);
       btnMoreEl.classList.add('btn-more-open');
       PAGE += 1;
+      totalHits = data.totalHits;
+      totalPages = Math.ceil(totalHits / LIMIT);
     })
     .catch(error => {
       iziToast.error({
@@ -62,11 +67,20 @@ formEl.addEventListener('submit', event => {
     });
 });
 
-btnMoreEl.addEventListener('click', () => {
+btnMoreEl.addEventListener('click', async () => {
   btnMoreEl.classList.remove('btn-more-open');
   loaderMoreEL.classList.add('loader-more-open');
-  requestImages(valueUser, PAGE)
+  requestImages(valueUser, PAGE, LIMIT)
     .then(data => {
+      if (PAGE > totalPages) {
+        loaderMoreEL.classList.remove('loader-more-open');
+
+        return iziToast.warning({
+          position: 'bottomRight',
+          message: "We're sorry, but you've reached the end of search results.",
+        });
+      }
+
       renderImages(data.hits);
       btnMoreEl.classList.add('btn-more-open');
       PAGE += 1;
@@ -77,6 +91,4 @@ btnMoreEl.addEventListener('click', () => {
         message: `Something went wrong: ${error.message}`,
       });
     });
-  
-
 });

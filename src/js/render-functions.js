@@ -3,9 +3,6 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 
 import { listImagesEl, loaderEl, loaderMoreEL } from './appeal-collection';
 
-// const listImagesEl = document.querySelector('.images-list');
-// const loaderEl = document.querySelector('.loader');
-
 export async function renderImages(images) {
   const murkup = await images
     .map(image => {
