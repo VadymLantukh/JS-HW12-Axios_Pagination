@@ -3,6 +3,7 @@ import 'izitoast/dist/css/iziToast.min.css';
 
 import { requestImages } from './js/pixabay-api';
 import { renderImages } from './js/render-functions';
+import { scrollDawn } from './js/imagesScroll';
 
 import {
   formEl,
@@ -60,6 +61,15 @@ formEl.addEventListener('submit', async event => {
     PAGE += 1;
     totalHits = data.totalHits;
     totalPages = Math.ceil(totalHits / LIMIT);
+
+    if (totalHits < LIMIT) {
+      btnMoreEl.classList.remove('btn-more-open');
+
+      return iziToast.info({
+        position: 'bottomRight',
+        message: "We're sorry, but you've reached the end of search results.",
+      });
+    }
   } catch (error) {
     iziToast.error({
       title: 'Error',
@@ -74,24 +84,19 @@ btnMoreEl.addEventListener('click', async () => {
 
   try {
     const data = await requestImages(valueUser, PAGE, LIMIT);
+    console.log(totalHits)
     if (PAGE > totalPages) {
       loaderMoreEl.classList.remove('loader-more-open');
 
-      return iziToast.warning({
+      return iziToast.info({
         position: 'bottomRight',
         message: "We're sorry, but you've reached the end of search results.",
       });
     }
 
     await renderImages(data.hits);
-
     const imageItem = listImagesEl.querySelector('.images-item');
-    const rect = imageItem.getBoundingClientRect();
-    const itemHeight = rect.height;
-    window.scrollBy({
-      top: itemHeight * 2.2,
-      behavior: 'smooth',
-    });
+    scrollDawn(imageItem);
 
     btnMoreEl.classList.add('btn-more-open');
     PAGE += 1;
