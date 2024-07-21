@@ -1,10 +1,6 @@
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
-import {
-  listImagesEl,
-  loaderEl,
-  loaderMoreEl,
-} from './appeal-collection';
+import { listImagesEl, loaderEl, loaderMoreEl } from './appeal-collection';
 
 export async function renderImages(images) {
   const murkup = await images
@@ -37,4 +33,3 @@ export async function renderImages(images) {
     captionDelay: 250,
   }).refresh();
 }
-
