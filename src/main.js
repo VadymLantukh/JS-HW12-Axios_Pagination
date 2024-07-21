@@ -58,7 +58,6 @@ formEl.addEventListener('submit', async event => {
     await renderImages(data.hits);
     btnMoreEl.classList.add('btn-more-open');
 
-    PAGE += 1;
     totalHits = data.totalHits;
     totalPages = Math.ceil(totalHits / LIMIT);
 
@@ -84,7 +83,7 @@ btnMoreEl.addEventListener('click', async () => {
 
   try {
     const data = await requestImages(valueUser, PAGE, LIMIT);
-    console.log(totalHits)
+
     if (PAGE > totalPages) {
       loaderMoreEl.classList.remove('loader-more-open');
 
