@@ -85,7 +85,7 @@ btnMoreEl.addEventListener('click', async () => {
   try {
     const data = await requestImages(valueUser, PAGE, LIMIT);
 
-    if (PAGE > totalPages) {
+    if (PAGE > totalPages || data.hits.length < LIMIT) {
       loaderMoreEl.classList.remove('loader-more-open');
 
       return iziToast.info({
