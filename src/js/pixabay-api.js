@@ -2,7 +2,7 @@ import axios from 'axios';
 axios.defaults.baseURL = 'https://pixabay.com';
 
 export async function requestImages(q, value, limit) {
-  const response = await axios(`/api/`, {
+  const response = await axios(`/api`, {
     params: {
       page: value,
       per_page: limit,

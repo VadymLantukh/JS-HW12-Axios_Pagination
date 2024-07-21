@@ -39,56 +39,55 @@ formEl.addEventListener('submit', async event => {
     return;
   }
 
-  requestImages(valueUser, PAGE, LIMIT)
-    .then(data => {
-      if (data.hits.length === 0) {
-        loaderEl.classList.remove('loader-open');
-        btnMoreEl.classList.remove('btn-more-open');
-        iziToast.warning({
-          title: 'Warning',
-          message:
-            'Sorry, there are no images matching your search query. Please try again!',
-        });
-
-        return;
-      }
-
-      renderImages(data.hits);
-      btnMoreEl.classList.add('btn-more-open');
-      PAGE += 1;
-      totalHits = data.totalHits;
-      totalPages = Math.ceil(totalHits / LIMIT);
-    })
-    .catch(error => {
-      iziToast.error({
-        title: 'Error',
-        message: `Something went wrong: ${error.message}`,
+  try {
+    const data = await requestImages(valueUser, PAGE, LIMIT);
+    if (data.hits.length === 0) {
+      loaderEl.classList.remove('loader-open');
+      btnMoreEl.classList.remove('btn-more-open');
+      iziToast.warning({
+        title: 'Warning',
+        message:
+          'Sorry, there are no images matching your search query. Please try again!',
       });
+
+      return;
+    }
+
+    renderImages(data.hits);
+    btnMoreEl.classList.add('btn-more-open');
+    PAGE += 1;
+    totalHits = data.totalHits;
+    totalPages = Math.ceil(totalHits / LIMIT);
+  } catch (error) {
+    iziToast.error({
+      title: 'Error',
+      message: `Something went wrong: ${error.message}`,
     });
+  }
 });
 
 btnMoreEl.addEventListener('click', async () => {
   btnMoreEl.classList.remove('btn-more-open');
   loaderMoreEL.classList.add('loader-more-open');
-  requestImages(valueUser, PAGE, LIMIT)
-    .then(data => {
-      if (PAGE > totalPages) {
-        loaderMoreEL.classList.remove('loader-more-open');
 
-        return iziToast.warning({
-          position: 'bottomRight',
-          message: "We're sorry, but you've reached the end of search results.",
-        });
-      }
+  try {
+    const data = await requestImages(valueUser, PAGE, LIMIT);
+    if (PAGE > totalPages) {
+      loaderMoreEL.classList.remove('loader-more-open');
 
-      renderImages(data.hits);
-      btnMoreEl.classList.add('btn-more-open');
-      PAGE += 1;
-    })
-    .catch(error => {
-      iziToast.error({
-        title: 'Error',
-        message: `Something went wrong: ${error.message}`,
+      return iziToast.warning({
+        position: 'bottomRight',
+        message: "We're sorry, but you've reached the end of search results.",
       });
+    }
+
+    renderImages(data.hits);
+    btnMoreEl.classList.add('btn-more-open');
+    PAGE += 1;
+  } catch (error) {
+    iziToast.error({
+      title: 'Error',
+      message: `Something went wrong: ${error.message}`,
     });
+  }
 });
