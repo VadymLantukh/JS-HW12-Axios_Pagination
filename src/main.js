@@ -10,7 +10,7 @@ import {
   loaderEl,
   inputEl,
   btnMoreEl,
-  loaderMoreEL,
+  loaderMoreEl,
 } from './js/appeal-collection';
 
 let LIMIT = 15;
@@ -41,6 +41,7 @@ formEl.addEventListener('submit', async event => {
 
   try {
     const data = await requestImages(valueUser, PAGE, LIMIT);
+
     if (data.hits.length === 0) {
       loaderEl.classList.remove('loader-open');
       btnMoreEl.classList.remove('btn-more-open');
@@ -53,8 +54,9 @@ formEl.addEventListener('submit', async event => {
       return;
     }
 
-    renderImages(data.hits);
+    await renderImages(data.hits);
     btnMoreEl.classList.add('btn-more-open');
+
     PAGE += 1;
     totalHits = data.totalHits;
     totalPages = Math.ceil(totalHits / LIMIT);
@@ -68,12 +70,12 @@ formEl.addEventListener('submit', async event => {
 
 btnMoreEl.addEventListener('click', async () => {
   btnMoreEl.classList.remove('btn-more-open');
-  loaderMoreEL.classList.add('loader-more-open');
+  loaderMoreEl.classList.add('loader-more-open');
 
   try {
     const data = await requestImages(valueUser, PAGE, LIMIT);
     if (PAGE > totalPages) {
-      loaderMoreEL.classList.remove('loader-more-open');
+      loaderMoreEl.classList.remove('loader-more-open');
 
       return iziToast.warning({
         position: 'bottomRight',
@@ -81,7 +83,16 @@ btnMoreEl.addEventListener('click', async () => {
       });
     }
 
-    renderImages(data.hits);
+    await renderImages(data.hits);
+
+    const imageItem = listImagesEl.querySelector('.images-item');
+    const rect = imageItem.getBoundingClientRect();
+    const itemHeight = rect.height;
+    window.scrollBy({
+      top: itemHeight * 2.2,
+      behavior: 'smooth',
+    });
+
     btnMoreEl.classList.add('btn-more-open');
     PAGE += 1;
   } catch (error) {

@@ -85,7 +85,6 @@
   min-height: 200px;
   transition: all 350ms;
   border-radius: 8px;
-    background-color: #6c8cff;
 }
 
 .images-item img {
@@ -161,10 +160,6 @@
     background-size: 10px 3px, 10px 3px, 10px 3px, 10px 10px, 10px 30px,
       10px 50px;
   }
-}
-
-.loader-close {
-  display: none;
 }
 
 .loader-open {
