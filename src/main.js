@@ -58,6 +58,7 @@ formEl.addEventListener('submit', async event => {
     await renderImages(data.hits);
     btnMoreEl.classList.add('btn-more-open');
 
+    PAGE += 1;
     totalHits = data.totalHits;
     totalPages = Math.ceil(totalHits / LIMIT);
 
