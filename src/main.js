@@ -14,7 +14,7 @@ import {
   loaderMoreEl,
 } from './js/appeal-collection';
 
-let LIMIT = 10;
+let LIMIT = 15;
 let PAGE = 1;
 let valueUser;
 let totalHits;
