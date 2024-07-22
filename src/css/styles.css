@@ -94,7 +94,7 @@
 }
 
 .images-item:hover {
-  box-shadow: 7px 7px 14px #c7c7c7, -7px -7px 14px #f9f9f9;
+  box-shadow: 7px 7px 14px #6c8cff, -7px -7px 14px #f9f9f9;
   transform: scale(1.02);
 }
 
