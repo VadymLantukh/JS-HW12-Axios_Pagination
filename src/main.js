@@ -14,7 +14,7 @@ import {
   loaderMoreEl,
 } from './js/appeal-collection';
 
-let LIMIT = 15;
+let LIMIT = 10;
 let PAGE = 1;
 let valueUser;
 let totalHits;
@@ -58,13 +58,11 @@ formEl.addEventListener('submit', async event => {
     await renderImages(data.hits);
     btnMoreEl.classList.add('btn-more-open');
 
-    PAGE += 1;
     totalHits = data.totalHits;
     totalPages = Math.ceil(totalHits / LIMIT);
 
     if (totalHits < LIMIT) {
       btnMoreEl.classList.remove('btn-more-open');
-
       return iziToast.info({
         position: 'bottomRight',
         message: "We're sorry, but you've reached the end of search results.",
@@ -79,27 +77,27 @@ formEl.addEventListener('submit', async event => {
 });
 
 btnMoreEl.addEventListener('click', async () => {
+  PAGE += 1;
   btnMoreEl.classList.remove('btn-more-open');
   loaderMoreEl.classList.add('loader-more-open');
 
   try {
     const data = await requestImages(valueUser, PAGE, LIMIT);
 
-    if (PAGE > totalPages || data.hits.length < LIMIT) {
-      loaderMoreEl.classList.remove('loader-more-open');
+    await renderImages(data.hits);
 
+    if (PAGE >= totalPages || data.hits.length < LIMIT) {
+      loaderMoreEl.classList.remove('loader-more-open');
       return iziToast.info({
         position: 'bottomRight',
         message: "We're sorry, but you've reached the end of search results.",
       });
     }
 
-    await renderImages(data.hits);
     const imageItem = listImagesEl.querySelector('.images-item');
     scrollDawn(imageItem);
 
     btnMoreEl.classList.add('btn-more-open');
-    PAGE += 1;
   } catch (error) {
     iziToast.error({
       title: 'Error',
