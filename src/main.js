@@ -1,9 +1,9 @@
 import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
 
-import { requestImages } from './js/pixabay-api';
-import { renderImages } from './js/render-functions';
-import { scrollDawn } from './js/imagesScroll';
+import { requestImages } from './js/pixabay-api.js';
+import { renderImages } from './js/render-functions.js';
+import { scrollDawn } from './js/imagesScroll.js';
 
 import {
   formEl,
